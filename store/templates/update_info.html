@@ -16,16 +16,22 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <br> <br>
+                <strong>Billing information</strong>
+                <br><br>
                 <form method="POST" action="{% url 'update_info' %}">
                     {% csrf_token %}
 
                     {{ form.as_p }}
                     <br><br>
+                    <strong>Shipping information</strong>
+                    <br><br>
+                    {{ shipping_form.as_p }}
+                    <br><br>
                     <button type="submit" class="btn btn-secondary">
                         Update Profile
                     </button>
                     &nbsp;&nbsp;
-                    <a href="{% url 'home' %}" class="btn btn-secondary" >Skip this step</a>
+                    <a href="{% url 'home' %}" class="btn btn-secondary" >Back</a>
                         
                 </form>
                 <br>
