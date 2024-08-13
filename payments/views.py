@@ -8,6 +8,29 @@ from store.models import Product
 
 
 
+
+def not_shipped_dash(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        orders = Order.objects.filter(shipped=False)
+
+
+        return render(request, 'payments/not_shipped_dash.html', {'orders':orders})
+    else:
+        messages.success(request, 'Access Denied')
+        return redirect('home')
+
+
+
+def shipped_dash(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        orders = Order.objects.filter(shipped=True)
+        return render(request, 'payments/shipped_dash.html', {'orders':orders})
+    else:
+        messages.success(request, 'Access Denied')
+        return redirect('home')
+
+
+
 def process_order(request):
     if request.POST:
         # Get the cart
