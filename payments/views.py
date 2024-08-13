@@ -4,6 +4,7 @@ from payments.forms import ShippingForm, PaymentForm
 from payments.models import ShippingAddress, Order, OrderItem
 from django.contrib import messages
 from django.contrib.auth.models import User
+from store.models import Product
 
 
 
@@ -24,6 +25,7 @@ def process_order(request):
         # Create shipping address from session info
         shipping_address = f"{my_shipping['shipping_address1']}\n{my_shipping['shipping_address2']}\n{my_shipping['shipping_city']}\n{my_shipping['shipping_state']}\n{my_shipping['shipping_zipcode']}\n{my_shipping['shipping_country']}"
         amount_paid = totals
+        
         # Create an order
         if request.user.is_authenticated:
             # logged in
@@ -31,13 +33,61 @@ def process_order(request):
             # Create Order
             create_order = Order(user=user, full_name=full_name, email=email, shipping_address=shipping_address, amount_paid=amount_paid)
             create_order.save()
+
+            # Add order items
+            # Get the order ID
+            order_id = create_order.pk
+            # Get product info
+            for product in cart_products():
+                # Get product id
+                product_id = product.id
+                # Get product price
+                if product.sale_price:
+                    price = product.sale_price
+                else:
+                    price = product.price
+                # Get quantity
+                for key, value in quantities().items():
+                    if int(key) == product.id:
+                        # Create order item
+                        create_order_item = OrderItem(order_id=order_id, product_id=product_id, user=user, quantity=value, price=price)
+                        create_order_item.save()
+            # Delete our cart
+            for key in list(request.session.keys()):
+                if key == 'session_key':
+                    # Delete the key
+                    del request.session[key]
             messages.success(request, 'Order Placed!')
             return redirect('home')
+        
         else:
             # not logged in
             # Create Order
             create_order = Order(full_name=full_name, email=email, shipping_address=shipping_address, amount_paid=amount_paid)
             create_order.save()
+            # Add order items
+            # Get the order ID
+            order_id = create_order.pk
+            # Get product info
+            for product in cart_products():
+                # Get product id
+                product_id = product.id
+                # Get product price
+                if product.sale_price:
+                    price = product.sale_price
+                else:
+                    price = product.price
+                # Get quantity
+                for key, value in quantities().items():
+                    if int(key) == product.id:
+                        # Create order item
+                        create_order_item = OrderItem(order_id=order_id, product_id=product_id, quantity=value, price=price)
+                        create_order_item.save()
+            # Delete our cart
+            for key in list(request.session.keys()):
+                if key == 'session_key':
+                    # Delete the key
+                    del request.session[key]
             messages.success(request, 'Order Placed!')
             return redirect('home')
     else:
