@@ -24,6 +24,23 @@
                             {% for item in items %}
                                 {{ item.product }} - {{ item.quantity }}pcs - ${{ item.price }} <br>
                             {% endfor %}
+                            <br><br>
+                            {% if not order.shipped %}
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="shipping_status" value="true">
+                                <button type="submit" class="btn btn-danger">Mark as shipped</button>
+                            </form>
+                            {% else %}
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="shipping_status" value="false">
+                                <button type="submit" class="btn btn-danger">Mark as not shipped</button>
+                            </form>
+
+                            {% endif %}
+                            <br>
+                            <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
                         </div>
                     </div>
                     <br>
