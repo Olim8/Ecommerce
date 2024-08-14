@@ -8,6 +8,17 @@ from store.models import Product
 
 
 
+def orders(request, pk):
+    if request.user.is_authenticated and request.user.is_superuser:
+        # Get the order
+        order = Order.objects.get(id=pk)
+        # Get the order items
+        items = OrderItem.objects.filter(order=pk)
+        return render(request, 'payments/orders.html', {'order':order, 'items':items})
+    else:
+        messages.success(request, 'Access Denied')
+        return redirect('home')
+
 
 def not_shipped_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:
