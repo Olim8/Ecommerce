@@ -18,8 +18,8 @@ SECRET_KEY = 'django-insecure-rpu@xp#%626ms5m8a&8u$724_2t^xe*kk6atncb=(l96_t^k^c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ecommerce-production-0599.up.railway.app', 'https://ecommerce-production-0599.up.railway.app']
-CSRF_TRUSTED_ORIGINS = ['ecommerce-production-0599.up.railway.app', 'https://ecommerce-production-0599.up.railway.app']
+ALLOWED_HOSTS = ['ecommerce-production-ec7a.up.railway.app', 'https://ecommerce-production-ec7a.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['ecommerce-production-ec7a.up.railway.app', 'https://ecommerce-production-ec7a.up.railway.app']
 
 
 # Application definition
@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': os.environ.get('DB_PASSWORD_YO'),
+        'PASSWORD': os.environ['DB_PASSWORD_YO'],
         'HOST': 'monorail.proxy.rlwy.net',
         'PORT': '16534',
     }
