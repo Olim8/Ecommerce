@@ -206,12 +206,12 @@ def billing_info(request):
             'invoice': str(uuid.uuid4()),
             'currency_code': 'USD',
             'notify_url': 'https://{}{}'.format(host, reverse('paypal-ipn')),
-            'return_url': 'https://{}{}'.format(host, reverse('payment_succes')),
+            'return_url': 'https://{}{}'.format(host, reverse('payment_success')),
             'cancel_return': 'https://{}{}'.format(host, reverse('payment_cancel')),
         }
         # create actual paypal button
         paypal_form = PayPalPaymentsForm(initial=paypal_dict)
-        
+
         # Check to see if user logged in
         if request.user.is_authenticated:
             # Get The Billing Form
